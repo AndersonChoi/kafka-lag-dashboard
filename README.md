@@ -1,6 +1,17 @@
-# kafka-lag-dashboard 만드는 방법 정리
+<h1 align="center">kafka-lag-dashboard</h1>
+<p align="center">
+  <strong>Kafka lag을 모니터링하는 확실한 방법</strong>
+</p>
 
-Kafka Consumer의 처리시간이 지연되면 topic 내부의 partition lag이 증가합니다. lag 모니터링을 통해 어느 partition이 lag이 증가하고 있는지, 어느 컨슈머가 문제가 있는지 확인하기 위해서는 consumer단위의 metric 모니터링으로는 해결하기 쉽지 않습니다. 그렇기 때문에 카프카 컨슈머 모니터링을 위해서는 외부 모니터링 tool 사용을 권장합니다.
+Kafka Consumer의 처리시간이 지연되면 topic 내부의 partition lag이 증가합니다. lag 모니터링을 통해 어느 partition이 lag이 증가하고 있는지, 어느 컨슈머가 문제가 있는지 확인하기 위해서는 consumer단위의 metric 모니터링으로는 해결하기 쉽지 않습니다. 그렇기 때문에 카프카 컨슈머 모니터링을 위해서는 burrow와 같은 외부 모니터링 tool 사용을 권장합니다.
+
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/AndersonChoi/kafka-lag-dashboard/master/images/kafka_logo.png" width="55px" />
+    <img src="https://raw.githubusercontent.com/AndersonChoi/kafka-lag-dashboard/master/images/telegraf_logo.png" width="50px" /> 
+    <img src="https://raw.githubusercontent.com/AndersonChoi/kafka-lag-dashboard/master/images/es_logo.png" width="50px" /> 
+    <img src="https://raw.githubusercontent.com/AndersonChoi/kafka-lag-dashboard/master/images/grafana_logo.png" width="50px" />
+</p>
 
 이 문서에서는 Linkedin에서 제공한 burrow를 사용하여 lag정보를 Elasticsearch로 수집하는 데이터파이프라인을 만들어보고, **Grafana 기반의 consumer단위 lag 모니터링 대시보드** 를 만드는 방법을 알려드리고자 합니다. 또한 lag증가에 따른 Slack alert를 받는 기능도 구현해보도록 하겠습니다. 
 
@@ -17,7 +28,7 @@ Partition lag을 모니터링하고 alert를 받기 위해 아래와 같은 기�
 - Elasticsearch([link](https://github.com/elastic/elasticsearch)) : kafka lag 데이터를 저장하는 역할을 합니다. 
 - Grafana([link](https://github.com/linkedin/Burrow)) : ES의 데이터를 시각화하고 threshold를 설정하여 slack alert를 보낼 수 있는 강력한 대시보드 tool입니다.
 
-**상기 준비물의 설치 방법 및 사용방법은 이 문서에서 다루지 않습니다. 각 기술의 링크를 참고하여 설치 부탁드립니다.**
+> 상기 준비물의 설치 방법 및 사용방법은 이 문서에서 다루지 않습니다. 각 기술의 링크를 참고하여 설치 부탁드립니다.
 
 ## 설정
 
@@ -111,16 +122,31 @@ Elasticsearch와 연동을 위해서 아래와 같이 Datasource 연동이 필�
 
 위 설정까지 끝내셨다면 lag을 모니터링할 준비가 완료되었습니다. 이제 Grafana 대시보드에서 그래프를 만들어서 Elasticsearch의 데이터를 기반으로 그래프를 그려보겠습니다.
 
-TBA - 그래프그리기 위한 query
+<p align="center">
+<img src="https://raw.githubusercontent.com/AndersonChoi/kafka-lag-dashboard/master/images/grafana_graph_setting.png" width="70%" height="30%" title="그래프그리기 위한 query" alt="그래프그리기 위한 query"></img>
+</p>
 
-TBA - 그래프 스크린샷
+<p align="center">
+<img src="https://raw.githubusercontent.com/AndersonChoi/kafka-lag-dashboard/master/images/grafana_graph.png" width="70%" height="30%" title="그래프 스크린샷" alt="그래프 스크린샷"></img>
+</p>
 
 ### Kakfa lag slack alert 설정
 
 Grafana에는 alert기능이 준비되어 있습니다. Alert는 Slack뿐만아니라 Line, Telegram, webhook, email 등 다양한 방식의 alert를 제공하고 있으므로 필요에 따라 사용하고 싶은 alert를 사용하셔도 좋습니다.
 
-TBA - slack token 발급받는방법
+<p align="center">
+<img src="https://raw.githubusercontent.com/AndersonChoi/kafka-lag-dashboard/master/images/grafana_setting_slack_alert.png" width="70%" height="30%" title="grafana에 slack token 적용" alt="grafana에 slack token 적용"></img>
+</p>
 
-TBA - grafana에 slack token 적용
+<p align="center">
+<img src="https://raw.githubusercontent.com/AndersonChoi/kafka-lag-dashboard/master/images/grafana_setting_alert_graph.png" width="70%" height="30%" title="그래프 알람 설정" alt="그래프 알람 설정"></img>
+</p>
 
-TBA - slack 알람 스크린샷
+<p align="center">
+<img src="https://raw.githubusercontent.com/AndersonChoi/kafka-lag-dashboard/master/images/grafana_graph_alert.png" width="70%" height="30%" title="그래프 이상감지" alt="그래프 이상감지"></img>
+</p>
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/AndersonChoi/kafka-lag-dashboard/master/images/slack_alert_message.png" width="70%" height="30%" title="slack 알람 스크린샷" alt="slack 알람 스크린샷"></img>
+</p>
+
