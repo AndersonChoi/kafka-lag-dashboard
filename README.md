@@ -122,10 +122,14 @@ Elasticsearch와 연동을 위해서 아래와 같이 Datasource 연동이 필�
 
 위 설정까지 끝내셨다면 lag을 모니터링할 준비가 완료되었습니다. 이제 Grafana 대시보드에서 그래프를 만들어서 Elasticsearch의 데이터를 기반으로 그래프를 그려보겠습니다.
 
+**그래프 설정**
 <p align="center">
 <img src="https://raw.githubusercontent.com/AndersonChoi/kafka-lag-dashboard/master/images/grafana_graph_setting.png" width="70%" height="30%" title="그래프그리기 위한 query" alt="그래프그리기 위한 query"></img>
 </p>
 
+burrow에서 수집한 데이터 중 measure_ment_name이 **burrow_partition** 인것만 대상으로 lag을 수집합니다. topic, groupId, partition 별로 group by로 묶어주시면 topic, groupId, partition별 lag추이를 확인할 수 있습니다.
+
+**그래프 확인**
 <p align="center">
 <img src="https://raw.githubusercontent.com/AndersonChoi/kafka-lag-dashboard/master/images/grafana_graph.png" width="70%" height="30%" title="그래프 스크린샷" alt="그래프 스크린샷"></img>
 </p>
@@ -134,18 +138,26 @@ Elasticsearch와 연동을 위해서 아래와 같이 Datasource 연동이 필�
 
 Grafana에는 alert기능이 준비되어 있습니다. Alert는 Slack뿐만아니라 Line, Telegram, webhook, email 등 다양한 방식의 alert를 제공하고 있으므로 필요에 따라 사용하고 싶은 alert를 사용하셔도 좋습니다.
 
+**Slack url경로 추가**
 <p align="center">
 <img src="https://raw.githubusercontent.com/AndersonChoi/kafka-lag-dashboard/master/images/grafana_setting_slack_alert.png" width="70%" height="30%" title="grafana에 slack token 적용" alt="grafana에 slack token 적용"></img>
 </p>
 
+Slack과 연동하기 위해서는 url을 발급받아야 합니다. webhook url을 발급받는 방법은 [이 링크](https://api.slack.com/messaging/webhooks)를 확인해주세요.
+
+**그래프 alert 설정**
 <p align="center">
 <img src="https://raw.githubusercontent.com/AndersonChoi/kafka-lag-dashboard/master/images/grafana_setting_alert_graph.png" width="70%" height="30%" title="그래프 알람 설정" alt="그래프 알람 설정"></img>
 </p>
 
+Alert를 받고 싶은 그래프에서 Alert configuration을 추가합니다. 위 쿼리는 1분마다, 지난 60초간 lag의 평균값이 10 이상일 경우에 Slack 메시지를 보내도록 설정하였습니다. 필요에 따라 설정을 변경하여 적용하면 lag 모니터링시 유용합니다.
+
+**이상징후 발생**
 <p align="center">
 <img src="https://raw.githubusercontent.com/AndersonChoi/kafka-lag-dashboard/master/images/grafana_graph_alert.png" width="70%" height="30%" title="그래프 이상감지" alt="그래프 이상감지"></img>
 </p>
 
+**Slack 메시지**
 <p align="center">
 <img src="https://raw.githubusercontent.com/AndersonChoi/kafka-lag-dashboard/master/images/slack_alert_message.png" width="70%" height="30%" title="slack 알람 스크린샷" alt="slack 알람 스크린샷"></img>
 </p>
