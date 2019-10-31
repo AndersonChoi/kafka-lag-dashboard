@@ -15,10 +15,6 @@ Kafka Consumer의 처리시간이 지연되면 topic 내부의 partition lag이 
 
 이 문서에서는 Linkedin에서 제공한 burrow를 사용하여 lag정보를 Elasticsearch로 수집하는 데이터파이프라인을 만들어보고, **Grafana 기반의 consumer단위 lag 모니터링 대시보드** 를 만드는 방법을 알려드리고자 합니다. 또한 lag증가에 따른 Slack alert를 받는 기능도 구현해보도록 하겠습니다. 
 
-궁금한점이나 고칠점이 있다면 [issues](https://github.com/AndersonChoi/kafka-lag-dashboard/issues)에 남겨주시거나 fork 후 PR 부탁드립니다. 만약 이 문서가 도움되셨다면 :star: 를 눌러주세요.
-
-> 이 repository에 대한 라이센스는 없습니다. 누구든지 사용하여 카프카 lag모니터링에 도움이 되길 바랍니다.
-
 ## 준비물
 
 Partition lag을 모니터링하고 alert를 받기 위해 아래와 같은 기술 stack을 사용합니다. 아래 기술 stack은 무료로 사용 가능하면서도 필요한기능들(alert, pipeline 등)을 효과적으로 적용가능하기 때문에 고르게 되었습니다. 필요에 따라 기술을 대체할 수 있으므로, 요구사항에 따라 바꿔 사용하셔도 좋습니다. (예를 들어, Grafana → Elasticsearch X-Pack) 
@@ -169,3 +165,7 @@ Alert를 받고 싶은 그래프에서 Alert configuration을 추가합니다. �
 ## 맺음말
 
 여기까지 Burrow, Telegraf, Elasticsearch, Grafana를 사용하여 kafka lag 대시보드를 만들어 보았습니다. lag 모니터링을 통해 특정 컨슈머가 이상이 있는지 확인할 수 있으며 paritition의 이상동작도 감지할 수 있습니다. 이번 문서에서는 Burrow에서 가져온 partition data만 사용하였지만, consumer group의 이상징후도 함께 모니터링 가능하므로, 추가 모니터링이 필요할때는 그라파나에서 추가 query를 통해 그래프를 만들어 모니터링 하시는 것을 추천드립니다.
+
+궁금한점이나 고칠점이 있다면 [issues](https://github.com/AndersonChoi/kafka-lag-dashboard/issues)에 남겨주시거나 fork 후 PR 부탁드립니다. 만약 이 문서가 도움되셨다면 :star: 를 눌러주세요.
+
+> 이 repository에 대한 라이센스는 없습니다. 누구든지 사용하여 카프카 lag모니터링에 도움이 되길 바랍니다.
